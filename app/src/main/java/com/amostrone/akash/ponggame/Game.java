@@ -25,6 +25,7 @@ public class Game extends View {
         paint_block.setStrokeWidth(3);
         int middle=getWidth()/2;
         int top=getHeight();
+
         canvas.drawRect(0,100,middle*2,150,paint_block);
         canvas.drawRect(middle-150,top-125,middle+150,top-75,paint_block);
 
