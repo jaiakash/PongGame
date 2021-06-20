@@ -29,6 +29,8 @@ public class Game extends View {
         canvas.drawRect(0,100,middle*2,150,paint_block);
         canvas.drawRect(middle-150,top-125,middle+150,top-75,paint_block);
 
+        canvas.drawRect(middle-25,top-325,middle+25,top-275,paint_block);
+
         paint_score.setColor(Color.BLACK);
         paint_score.setStyle(Paint.Style.FILL);
         //canvas.drawPaint(paint_score);
