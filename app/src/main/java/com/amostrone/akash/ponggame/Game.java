@@ -22,7 +22,11 @@ public class Game extends View {
     Paint paint_score;
     Paint paint_upbar;
 
-    static int player_pos;
+    static int player_pos=-1;
+    static int block_X=-1;
+    static int block_Y=-1;
+
+    static int score_val=0;
 
     public Game(Context context) {
         super(context);
@@ -42,16 +46,21 @@ public class Game extends View {
         int middle=getWidth()/2;
         int top=getHeight();
 
-        paint_block.setColor(Color.GRAY);
-        block.bottom=top-275;
-        block.top=top-325;
-        block.left=middle-25;
-        block.right=middle+25;
+        if(player_pos==-1)player_pos=middle;
+
+        if(block_X==-1)block_X=middle;
+        if(block_Y==-1)block_Y=top-300;
+
+        paint_block.setColor(Color.RED);
+        block.bottom=block_Y+25;
+        block.top=block_Y-25;
+        block.left=block_X-25;
+        block.right=block_X+25;
         canvas.drawRect(block,paint_block);
 
-        paint_player.setColor(Color.GRAY);
-        player.bottom=top-75;
-        player.top=top-125;
+        paint_player.setColor(Color.GREEN);
+        player.bottom=top-25;
+        player.top=top-75;
         player.left=player_pos-150;
         player.right=player_pos+150;
         canvas.drawRect(player,paint_player);
@@ -65,7 +74,12 @@ public class Game extends View {
 
         paint_score.setColor(Color.GRAY);
         paint_score.setTextSize(50);
-        canvas.drawText("Score : ",middle-100,50,paint_score);
+        canvas.drawText("Score : "+score_val,middle-100,75,paint_score);
+
+        if(Rect.intersects(block,player)) {
+            score_val++;
+            Toast.makeText(getContext(), "Collision", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -84,6 +98,7 @@ public class Game extends View {
 
             case MotionEvent.ACTION_DOWN:
                 player_pos=(int) event.getX();
+                block_Y+=50;
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_MOVE:
@@ -97,4 +112,5 @@ public class Game extends View {
 
         return true;
     }
+
 }
