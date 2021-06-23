@@ -1,6 +1,7 @@
 package com.amostrone.akash.ponggame;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,7 +11,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.amostrone.akash.ponggame.MainActivity.*;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class Game extends View {
 
@@ -28,11 +31,12 @@ public class Game extends View {
     static int block_Y=-1;
 
     static int score_val=0;
+    static int highscore_val=0;
 
-    int block_move_y=-5;
+    int block_move_y=5;
     int block_move_x=5;
     int dirX=(int)Math.signum((Math.random()-0.5));
-    int dirY=1;
+    int dirY=-1;
 
     public Game(Context context) {
         super(context);
@@ -55,7 +59,7 @@ public class Game extends View {
         if(player_pos==-1)player_pos=middle;
 
         if(block_X==-1)block_X=middle;
-        if(block_Y==-1)block_Y=top-300;
+        if(block_Y==-1)block_Y=300;
 
         paint_block.setColor(Color.RED);
         block.bottom=block_Y+25;
@@ -80,7 +84,11 @@ public class Game extends View {
 
         paint_score.setColor(Color.GRAY);
         paint_score.setTextSize(50);
-        canvas.drawText("Score : "+score_val,middle-100,75,paint_score);
+
+        highscore_val=getHighscore();
+        canvas.drawText("High Score : "+highscore_val,middle-400,75,paint_score);
+
+        canvas.drawText("Score : "+score_val,middle+200,75,paint_score);
 
         //When block and player collide, invert x direction motion
         //Increase Score
@@ -110,6 +118,9 @@ public class Game extends View {
         if(block_Y>=getHeight()){
             Toast.makeText(getContext(), "Game Ended, Your Score is "+score_val, Toast.LENGTH_SHORT).show();
 
+            //Check High Score
+            setHighScore(score_val);
+
             //Reset Speed
             block_move_x=5;
             block_move_y=5;
@@ -126,6 +137,27 @@ public class Game extends View {
             dirX*=-1;
         }
         block_X-=block_move_x*dirX;
+    }
+
+    public void setHighScore(int h){
+        SharedPreferences sharedPref = getContext().getSharedPreferences("HighScore",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        int old_highScore = getHighscore();
+
+        if(h>old_highScore) {
+            editor.putInt("HighScore", h);
+            editor.apply();
+        }
+    }
+
+    public int getHighscore(){
+        SharedPreferences sharedPref = getContext().getSharedPreferences("HighScore",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        int defaultValue = 0;
+        int old_highScore = sharedPref.getInt("HighScore", defaultValue);
+        return old_highScore;
     }
 
     @Override
