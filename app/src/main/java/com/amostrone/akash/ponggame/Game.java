@@ -115,7 +115,7 @@ public class Game extends View {
     void block_movement(){
         //Up and down movement
         block_Y-=block_move_y*dirY;
-        if(block_Y>=getHeight()){
+        if(block_Y>=getHeight()-50){
             Toast.makeText(getContext(), "Game Ended, Your Score is "+score_val, Toast.LENGTH_SHORT).show();
 
             //Check High Score
@@ -180,7 +180,7 @@ public class Game extends View {
             case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_UP:
-                //Toast.makeText(getContext(), "Touch 2", Toast.LENGTH_SHORT).show();
+                player_pos=(int) event.getX();
                 break;
             case MotionEvent.ACTION_POINTER_UP:
             case MotionEvent.ACTION_CANCEL:
