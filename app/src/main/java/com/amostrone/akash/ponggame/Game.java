@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -27,6 +28,11 @@ public class Game extends View {
     static int block_Y=-1;
 
     static int score_val=0;
+
+    int block_move_y=-5;
+    int block_move_x=5;
+    int dirX=(int)Math.signum((Math.random()-0.5));
+    int dirY=1;
 
     public Game(Context context) {
         super(context);
@@ -76,10 +82,50 @@ public class Game extends View {
         paint_score.setTextSize(50);
         canvas.drawText("Score : "+score_val,middle-100,75,paint_score);
 
+        //When block and player collide, invert x direction motion
+        //Increase Score
+        //Increase speed
         if(Rect.intersects(block,player)) {
-            score_val++;
-            Toast.makeText(getContext(), "Collision", Toast.LENGTH_SHORT).show();
+            score_val+=2;
+            dirY*=-1;
+
+            //Increase Speed
+            block_move_x++;
+            block_move_y++;
         }
+
+        //When block and upbar collide, invert y direction motion
+        if(Rect.intersects(block,upbar)) {
+            dirY*=-1;
+        }
+
+        block_movement();
+
+        postInvalidate();
+    }
+
+    void block_movement(){
+        //Up and down movement
+        block_Y-=block_move_y*dirY;
+        if(block_Y>=getHeight()){
+            Toast.makeText(getContext(), "Game Ended, Your Score is "+score_val, Toast.LENGTH_SHORT).show();
+
+            //Reset Speed
+            block_move_x=5;
+            block_move_y=5;
+            //Reset Score
+            score_val=0;
+
+            dirY*=-1;
+        }
+
+        //Log.i("X Direction",block_X+"");
+
+        //Right and Left Movement
+        if(block_X<=0 || block_X>=getWidth()) {
+            dirX*=-1;
+        }
+        block_X-=block_move_x*dirX;
     }
 
     @Override
@@ -98,7 +144,6 @@ public class Game extends View {
 
             case MotionEvent.ACTION_DOWN:
                 player_pos=(int) event.getX();
-                block_Y+=50;
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_MOVE:
@@ -108,7 +153,7 @@ public class Game extends View {
             case MotionEvent.ACTION_POINTER_UP:
             case MotionEvent.ACTION_CANCEL:
         }
-        invalidate();
+        postInvalidate();
 
         return true;
     }
