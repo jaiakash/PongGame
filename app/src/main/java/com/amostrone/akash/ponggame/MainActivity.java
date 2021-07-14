@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,5 +20,7 @@ public class MainActivity extends AppCompatActivity {
         game =new Game(this);
         game.setBackgroundColor(Color.BLACK);
         setContentView(game);
+        MediaPlayer ring= MediaPlayer.create(MainActivity.this,R.raw.background);
+        ring.start();
     }
 }
