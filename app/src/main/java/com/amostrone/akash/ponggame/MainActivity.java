@@ -20,7 +20,5 @@ public class MainActivity extends AppCompatActivity {
         game =new Game(this);
         game.setBackgroundColor(Color.BLACK);
         setContentView(game);
-        MediaPlayer ring= MediaPlayer.create(MainActivity.this,R.raw.background);
-        ring.start();
     }
 }

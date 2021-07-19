@@ -6,12 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
-
-import com.amostrone.akash.ponggame.MainActivity.*;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -32,6 +30,8 @@ public class Game extends View {
 
     static int score_val=0;
     static int highscore_val=0;
+    MediaPlayer ring_hit= MediaPlayer.create(getContext(),R.raw.hit);
+    MediaPlayer ring_background= MediaPlayer.create(getContext(),R.raw.background);
 
     int block_move_y=5;
     int block_move_x=5;
@@ -52,6 +52,9 @@ public class Game extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        //Background Music
+        ring_background.start();
 
         int middle=getWidth()/2;
         int top=getHeight();
@@ -97,6 +100,9 @@ public class Game extends View {
             score_val+=2;
             dirY*=-1;
 
+            //Collision music
+            ring_hit.start();
+
             //Increase Speed
             block_move_x++;
             block_move_y++;
@@ -113,6 +119,7 @@ public class Game extends View {
     }
 
     void block_movement(){
+
         //Up and down movement
         block_Y-=block_move_y*dirY;
         if(block_Y>=getHeight()-50){
@@ -140,6 +147,7 @@ public class Game extends View {
     }
 
     public void setHighScore(int h){
+
         SharedPreferences sharedPref = getContext().getSharedPreferences("HighScore",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -152,6 +160,7 @@ public class Game extends View {
     }
 
     public int getHighscore(){
+
         SharedPreferences sharedPref = getContext().getSharedPreferences("HighScore",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
