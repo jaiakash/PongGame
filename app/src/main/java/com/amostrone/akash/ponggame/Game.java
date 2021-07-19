@@ -32,6 +32,7 @@ public class Game extends View {
     static int highscore_val=0;
     MediaPlayer ring_hit= MediaPlayer.create(getContext(),R.raw.hit);
     MediaPlayer ring_background= MediaPlayer.create(getContext(),R.raw.background);
+    MediaPlayer ring_gameover= MediaPlayer.create(getContext(),R.raw.gameover);
 
     int block_move_y=5;
     int block_move_x=5;
@@ -124,6 +125,9 @@ public class Game extends View {
         block_Y-=block_move_y*dirY;
         if(block_Y>=getHeight()-50){
             Toast.makeText(getContext(), "Game Ended, Your Score is "+score_val, Toast.LENGTH_SHORT).show();
+
+            //Game over music
+            ring_gameover.start();
 
             //Check High Score
             setHighScore(score_val);
