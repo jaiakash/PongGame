@@ -17,6 +17,7 @@ Done Using SharedPrefs
 <h4>Increase ball speed as time progresses (Easy/Hard mode).</h4>
 Done: Increased the speed by 1 unit every collision
 <h4>Add sound effects on collisions of the ball with the walls and when the game ends</h4>
+Done: Added background music, hit and game end music.
 
 <h2>Hacker++</h2>
 
